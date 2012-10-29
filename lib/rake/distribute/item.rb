@@ -11,12 +11,12 @@ module Rake::Distribute
         instance_eval(&block) if block_given?
       end
 
-      def from(where)
-        @from = where
+      def from(source)
+        @src = source
       end
 
-      def to(where)
-        @to = where
+      def to(dest, options={})
+        @dest = dest
       end
 
       def diff(&block)
@@ -24,8 +24,8 @@ module Rake::Distribute
       end
 
       def sanity?
-        raise SyntaxError, "from: is not defined" unless defined? @from
-        raise SyntaxError, "to: is not defined" unless defined? @to
+        raise SyntaxError, "from: is not defined" unless defined? @src
+        raise SyntaxError, "to: is not defined" unless defined? @dest
       end
 
       def define_tasks
