@@ -15,41 +15,33 @@ module Rake::Distribute
 
     def initialize
       @serial_number = 1
-      @build_dir = File.join('build','distribute')
-      @distribute_config_file = File.join('config','distribute.rb')
       @items = []
 
-      # define task descriptions
+      # unify task descriptions
       namespace :distribute do
-        desc "distribute install"
+        desc "distribute"
         task :install
 
-        desc "distribute build"
+        desc "build for distribution"
         task :build
 
-        desc "distribute diff"
+        desc "clean temporary items"
+        task :clean
+
+        desc "clean all unnecessary items"
+        task :clobber => :clean
+
+        desc "diff the distributed from the source"
         task :diff
 
-        desc "distribute uninstall"
+        desc "uninstall the distributed"
         task :uninstall
       end
+      task :clean => "distribute:clean"
+      task :clobber => "distribute:clobber"
     end
 
     def define_tasks
-      # [TODO]( diff proc or diff action ) @zhaocai @start(2012-10-18 18:47)
-
-      if File.exist? self.distribute_config_file
-        require self.distribute_config_file
-
-        msg = "initialize_items"
-        warn msg if $DEBUG
-        send msg if self.respond_to? msg
-      end
-      return if items.empty?
-
-      require 'erb'
-      require 'diffy'
-      require "rake/clean"
 
       namespace "distribute" do
 

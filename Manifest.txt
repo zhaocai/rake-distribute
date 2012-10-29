@@ -8,6 +8,7 @@ lib/rake/distribute/core.rb
 lib/rake/distribute/dsl.rb
 lib/rake/distribute/item.rb
 lib/rake/distribute/item/file.rb
+lib/rake/distribute/item/erbfile.rb
 lib/rake/distribute/version.rb
 test/minitest_helper.rb
 test/test_rake_distribute.rb

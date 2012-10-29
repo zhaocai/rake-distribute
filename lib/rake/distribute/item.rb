@@ -1,9 +1,13 @@
-#!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
 
 module Rake::Distribute
   module Item
+    @@serial_number = 0
+    def self.sn
+      @@serial_number += 1
+    end
+
     class Base
       include Rake::DSL
 
@@ -26,16 +30,6 @@ module Rake::Distribute
       def sanity?
         raise SyntaxError, "from: is not defined" unless defined? @src
         raise SyntaxError, "to: is not defined" unless defined? @dest
-      end
-
-      def define_tasks
-        raise NotImplementedError
-      end
-    end
-
-    class ErbFile < Base
-      def initialize(&block)
-        super
       end
 
       def define_tasks

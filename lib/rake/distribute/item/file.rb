@@ -26,13 +26,13 @@ module Rake::Distribute
 
       def define_tasks
         namespace "distribute" do
-          to_dir = @dest.pathmap("%d")
-          directory to_dir
+          dest_folder = @dest.pathmap("%d")
+          directory dest_folder
           file @dest => @src do
             install @src, @dest, @dest_options
           end
 
-          task :install => [to_dir, @dest]
+          task :install => [dest_folder, @dest]
 
           task :uninstall do
             safe_unlink @dest
