@@ -1,5 +1,11 @@
 === 1.0.0 / 2012-10-24
 
+* 3 minor enhancement
+
+  * add file install options
+  * erb item
+  * file item
+
 * 1 major enhancement
 
   * Birthday!

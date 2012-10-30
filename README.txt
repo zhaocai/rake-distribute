@@ -1,10 +1,10 @@
-= hoe-distribute
+= rake-distribute
 
-* https://github.com/zhaocai/hoe-distribute
+* https://github.com/zhaocai/rake-distribute
 
 == DESCRIPTION:
 
-
+distribute items (files, templates, directories, etc.) to difference locations.
 
 == FEATURES/PROBLEMS:
 
@@ -16,7 +16,7 @@
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* `bundle install` can handle the required gems
 
 == INSTALL:
 
@@ -27,13 +27,6 @@
   FIX [options] source_file
 
   For help use: FIX -h
-
-== OPTIONS:
-
-  -h, --help          Displays help message
-  -v, --version       Display the version, then exit
-  -q, --quiet         Output as little as possible, overrides verbose
-  -V, --verbose       Verbose output
 
 == DEVELOPERS:
 

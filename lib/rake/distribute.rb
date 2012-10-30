@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 require 'rake'
+require 'diffy'
 require 'rake/distribute/version'
 
 require 'rake/distribute/core'

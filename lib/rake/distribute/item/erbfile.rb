@@ -53,14 +53,14 @@ module Rake::Distribute
           end
 
           task :build => [@build_dir, build_file]
-          task :install => [:build, dest_dir, @dest]
+          task :install => [@build_dir, build_file, dest_dir, @dest]
 
           task :uninstall do
-            safe_unlink @dest
+            safe_unlink @dest if File.exists?(@dest)
           end
 
           task :clean do
-            safe_unlink build_file
+            safe_unlink build_file if File.exists?(build_file)
           end
 
           task :clobber => [:clean] do
