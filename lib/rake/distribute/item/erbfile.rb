@@ -1,14 +1,20 @@
 # -*- coding: utf-8 -*-
 require 'rake/distribute/item/file'
 require 'erb'
+require 'ostruct'
 
 module Rake::Distribute
   module Item
 
+    class ErbContext < OpenStruct
+      def get_binding
+        binding
+      end
+    end
     class ErbFile < FileItem
       attr_accessor :context
-
       def initialize(&block)
+        @context   = {}
         @build_dir = File.join('build','distribute')
         super
       end
@@ -36,7 +42,8 @@ module Rake::Distribute
                                  "#{Item.sn.to_s}-#{@src.pathmap('%n')}")
           file build_file => @src do
             File.open(build_file, 'w') do |f|
-              f.write(ERB.new(File.read(@src)).result(binding))
+              erb = ERB.new(File.read(@src))
+              f.write(erb.result(ErbContext.new(@context).get_binding))
               f.flush
             end
           end
