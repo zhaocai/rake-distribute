@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require 'rake'
+require 'rake/dsl_definition'
 require 'singleton'
 
 module Rake::Distribute

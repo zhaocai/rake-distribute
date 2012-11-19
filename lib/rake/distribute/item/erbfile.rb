@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'rake/distribute/item/file'
+require 'rake/ext/string'
 require 'erb'
 require 'ostruct'
 
@@ -11,8 +12,8 @@ module Rake::Distribute
         binding
       end
     end
+
     class ErbFile < FileItem
-      attr_accessor :context
       def initialize(&block)
         @context   = {}
         @build_dir = File.join('build','distribute')

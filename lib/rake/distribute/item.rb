@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+require 'rake/dsl_definition'
 
 module Rake::Distribute
   module Item
