@@ -5,9 +5,15 @@ module Rake::Distribute
     #
     # ## Examples:
     #
-    #   distribute :Item do
+    #   distribute :FileItem do
     #     from "/path/from"
     #     to "/path/to"
+    #   end
+    #
+    #   distribute :ErbFile do
+    #     from "/path/from"
+    #     to "/path/to"
+    #     with_context {:a => 1, :b => 2}
     #   end
     def distribute(item_class, &block)
       Rake::Distribute::Core.instance.distribute(item_class, &block)
