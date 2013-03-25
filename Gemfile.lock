@@ -1,34 +1,19 @@
-PATH
-  remote: .
-  specs:
-    rake-distribute (1.0.0.20121030083712)
-      diffy (>= 2.0.8)
-
 GEM
   remote: https://rubygems.org/
   specs:
-    ansi (1.4.3)
-    diffy (2.1.0)
-    hoe (3.3.1)
+    diffy (2.0.10)
+    hoe (3.5.2)
       rake (>= 0.8, < 11.0)
-    json (1.7.5)
-    json_pure (1.7.5)
-    minitest (4.3.1)
-    rake (10.0.2)
-    rdoc (3.12)
+    json (1.7.7)
+    rake (10.0.3)
+    rdoc (3.12.2)
       json (~> 1.4)
-    rubyforge (2.0.4)
-      json_pure (>= 1.1.7)
-    turn (0.9.6)
-      ansi
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  hoe (~> 3.1)
-  minitest (>= 4.1.0)
-  rake-distribute!
+  diffy (~> 2.0.9)
+  hoe (~> 3.5)
+  rake (~> 10.0.0)
   rdoc (~> 3.10)
-  rubyforge (>= 2.0.4)
-  turn (>= 0.8.3)
