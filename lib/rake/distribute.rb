@@ -5,6 +5,10 @@ require 'rake'
 require 'diffy'
 require 'rake/distribute/version'
 
+# monkey patch
+require 'rake/distribute/task'
+
+
 require 'rake/distribute/core'
 require 'rake/distribute/dsl'
 

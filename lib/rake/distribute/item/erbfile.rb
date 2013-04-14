@@ -33,48 +33,54 @@ module Rake::Distribute
         @context = context
       end
 
-      def define_tasks
-        namespace "distribute" do
-          dest_dir = @dest.pathmap("%d")
-          directory dest_dir
-          directory @build_dir
+      def define_tasks(options={})
 
-          build_file = File.join(@build_dir,
-                                 "#{Item.sn.to_s}-#{@src.pathmap('%n')}")
-          file build_file => @src do
-            File.open(build_file, 'w') do |f|
-              erb = ERB.new(File.read(@src))
-              f.write(erb.result(ErbContext.new(@context).get_binding))
-              f.flush
-            end
+        dest_dir = @dest.pathmap("%d")
+        directory dest_dir
+        directory @build_dir
+
+        build_file = File.join(@build_dir,
+                               "#{Item.sn.to_s}-#{@src.pathmap('%n')}")
+        file build_file => @src do
+          File.open(build_file, 'w') do |f|
+            erb = ERB.new(File.read(@src))
+            f.write(erb.result(ErbContext.new(@context).get_binding))
+            f.flush
           end
+        end
 
-          file @dest => build_file do
-            install build_file, @dest, @dest_options
-          end
+        file @dest => build_file do
+          install build_file, @dest, @dest_options
+        end
 
-          task :build => [@build_dir, build_file]
-          task :install => [@build_dir, build_file, dest_dir, @dest]
+        desc "distribute: build"
+        task :build => [@build_dir, build_file]
+        
+        desc "distribute: install"
+        task :install => [@build_dir, build_file, dest_dir, @dest]
 
-          task :uninstall do
-            safe_unlink @dest if File.exists?(@dest)
-          end
+        desc "distribute: uninstall"
+        task :uninstall do
+          safe_unlink @dest if File.exists?(@dest)
+        end
 
-          task :clean do
-            safe_unlink build_file if File.exists?(build_file)
-          end
+        desc "distribute: clean"
+        task :clean do
+          safe_unlink build_file if File.exists?(build_file)
+        end
 
-          task :clobber => [:clean] do
-            rmdir @build_dir
-          end
+        desc "distribute: clobber"
+        task :clobber => [:clean] do
+          rmdir @build_dir
+        end
 
-          task :diff => [@build_dir, build_file] do
-            diff = Diffy::Diff.new(
-              @dest, build_file, :source => 'files', :allow_empty_diff => true
-            ).to_s(:text)
+        desc "distribute: diff"
+        task :diff => [@build_dir, build_file] do
+          diff = Diffy::Diff.new(
+            @dest, build_file, :source => 'files', :allow_empty_diff => true
+          ).to_s(:text)
 
-            @diff_proc.call(@dest, build_file) unless diff.empty?
-          end
+          @diff_proc.call(@dest, build_file) unless diff.empty?
         end
       end
 
