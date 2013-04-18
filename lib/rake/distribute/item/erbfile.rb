@@ -33,10 +33,7 @@ module Rake::Distribute
         @context = context
       end
 
-      def define_tasks(options={})
-
-        dest_dir = @dest.pathmap("%d")
-        directory dest_dir
+      def define_build_task(options={})
         directory @build_dir
 
         build_file = File.join(@build_dir,
@@ -48,6 +45,16 @@ module Rake::Distribute
             f.flush
           end
         end
+        build_file
+      end
+
+      def define_tasks(options={})
+
+        dest_dir = @dest.pathmap("%d")
+        directory dest_dir
+
+        build_file = define_build_task(options)
+
 
         file @dest => build_file do
           install build_file, @dest, @dest_options

@@ -21,10 +21,7 @@ module Rake::Distribute
 
       end
 
-      def define_tasks(options={})
-
-        dest_dir = @dest.pathmap("%d")
-        directory dest_dir
+      def define_build_task(options={})
         directory @build_dir
 
         build_file = File.join(@build_dir,
@@ -36,40 +33,7 @@ module Rake::Distribute
             f.flush
           end
         end
-
-        file @dest => build_file do
-          install build_file, @dest, @dest_options
-        end
-
-        desc "distribute: build"
-        task :build => [@build_dir, build_file]
-        
-        desc "distribute: install"
-        task :install => [@build_dir, build_file, dest_dir, @dest]
-
-        desc "distribute: uninstall"
-        task :uninstall do
-          safe_unlink @dest if File.exists?(@dest)
-        end
-
-        desc "distribute: clean"
-        task :clean do
-          safe_unlink build_file if File.exists?(build_file)
-        end
-
-        desc "distribute: clobber"
-        task :clobber => [:clean] do
-          rmdir @build_dir
-        end
-
-        desc "distribute: diff"
-        task :diff => [@build_dir, build_file] do
-          diff = Diffy::Diff.new(
-            @dest, build_file, :source => 'files', :allow_empty_diff => true
-          ).to_s(:text)
-
-          @diff_proc.call(@dest, build_file) unless diff.empty?
-        end
+        build_file
       end
 
     end
