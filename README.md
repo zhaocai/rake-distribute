@@ -25,6 +25,14 @@ distribute :FileItem do
 end
 
 distribute :ErbFile do
+  build_dir "build/distribute"
+  from "/path/from"
+  to "/path/to"
+  with_context {:a => 1, :b => 2}
+end
+
+distribute :TiltFile do
+  prefer Tilt::BlueClothTemplate
   from "/path/from"
   to "/path/to"
   with_context {:a => 1, :b => 2}

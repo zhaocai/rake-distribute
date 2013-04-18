@@ -8,7 +8,6 @@ module Rake::Distribute
     include Singleton
     include Rake::DSL
 
-    attr_accessor :build_dir
     attr_accessor :distribute_config_file
     attr_accessor :items
 
