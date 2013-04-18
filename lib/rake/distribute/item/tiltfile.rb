@@ -1,37 +1,17 @@
 # -*- coding: utf-8 -*-
-require 'rake/distribute/item/file'
+require 'rake/distribute/item/erbfile'
 require 'rake/ext/string'
-require 'erb'
+require 'tilt'
 require 'ostruct'
 
 module Rake::Distribute
   module Item
 
-    class ContextStruct < OpenStruct
-      def get_binding
-        binding
-      end
-    end
-
-    class ErbFile < FileItem
+    class TiltFile < ErbFile
       def initialize(&block)
-        @context   = {}
-        @build_dir = File.join('build','distribute')
         super
       end
 
-      def sanity?
-        super
-        raise ArgumentError, "#{@src} does not exist!" unless File.exists?(@src)
-      end
-
-      def build_dir(folder)
-        @build_dir = folder
-      end
-
-      def with_context(context)
-        @context = context
-      end
 
       def define_tasks(options={})
 
@@ -43,8 +23,8 @@ module Rake::Distribute
                                "#{Item.sn.to_s}-#{@src.pathmap('%n')}")
         file build_file => @src do
           File.open(build_file, 'w') do |f|
-            erb = ERB.new(File.read(@src))
-            f.write(erb.result(ContextStruct.new(@context).get_binding))
+            tilt = Tilt.new(@src)
+            f.write(tilt.render(ContextStruct.new(@context)))
             f.flush
           end
         end

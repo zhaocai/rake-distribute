@@ -11,6 +11,7 @@ lib/rake/distribute/error.rb
 lib/rake/distribute/item.rb
 lib/rake/distribute/item/erbfile.rb
 lib/rake/distribute/item/file.rb
+lib/rake/distribute/item/tiltfile.rb
 lib/rake/distribute/task.rb
 lib/rake/distribute/version.rb
 rake-distribute.gemspec
