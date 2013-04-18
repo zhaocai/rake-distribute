@@ -1,6 +1,6 @@
 Gemfile
 Gemfile.lock
-History.txt
+History.md
 Manifest.txt
 README.md
 Rakefile
