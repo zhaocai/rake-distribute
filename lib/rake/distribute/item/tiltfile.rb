@@ -12,6 +12,14 @@ module Rake::Distribute
         super
       end
 
+      def prefer(tilt_template)
+        begin
+          Tilt.prefer tilt_template
+        rescue NameError => e
+          raise "rake/distribute: #{e.message}"
+        end
+
+      end
 
       def define_tasks(options={})
 
