@@ -9,6 +9,7 @@ module Rake::Distribute
 
     class TiltFile < ErbFile
       def initialize(&block)
+        Tilt.prefer Tilt::ErubisTemplate
         super
       end
 
