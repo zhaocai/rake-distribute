@@ -87,7 +87,7 @@ module Rake::Distribute
             @dest, build_file, :source => 'files', :allow_empty_diff => true
           ).to_s(:text)
 
-          @diff_proc.call(@dest, build_file) unless diff.empty?
+          @diff_proc.call(@dest, @src) unless diff.empty?
         end
       end
 
