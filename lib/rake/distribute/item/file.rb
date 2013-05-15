@@ -1,5 +1,6 @@
 require 'rake/distribute/item'
 require 'diffy'
+require 'active_support/core_ext/string'
 
 module Rake::Distribute
   module Item
@@ -25,6 +26,10 @@ module Rake::Distribute
         @build_dir = folder
       end
 
+      def uninstall(entries)
+        @uninstall_entries = entries
+      end
+
       def diff(&block)
         @diff_proc = block if block_given?
       end
@@ -38,17 +43,19 @@ module Rake::Distribute
         end
 
         if defined? @dest
-          if File.directory?(@dest)
-            dest_folder = @dest
-          else
-            dest_folder = @dest.pathmap("%d")
-            directory dest_folder
-            file @dest => dest_folder
-          end
 
           if build_dest
 
-            file @dest => build_dest do
+            if File.directory?(@dest)
+              dest = File.join(@dest, File.basename(build_dest))
+            else
+              dest = @dest
+            end
+
+            dest_folder = File.dirname(dest)
+            directory dest_folder
+
+            file dest => [build_dest, dest_folder] do
               if File.directory?(build_dest)
                 cp_r build_dest, @dest, @dest_options
               else
@@ -56,20 +63,31 @@ module Rake::Distribute
               end
             end
 
+
             desc "distribute: install"
-            task :install => @dest
+            task :install => dest
 
 
             define_diff_task(build_dest)
 
           else # without build ( install @src -> @dest )
-            file @dest => @src do
+
+            if File.directory?(@dest)
+              dest_folder = @dest
+            else
+              dest_folder = @dest.pathmap("%d")
+            end
+
+            directory dest_folder
+
+            file @dest => [@src, dest_folder] do
               if File.directory?(@dest)
                 cp_r @src, @dest, @dest_options
               else
                 install @src, @dest, @dest_options
               end
             end
+
 
             desc "distribute: install"
             task :install => @dest
@@ -80,15 +98,21 @@ module Rake::Distribute
           desc "distribute: uninstall"
           task :uninstall do
             if File.directory?(@dest)
-              rmtree File.join(@dest, File.basename(@dest))
+              uninstall_hint
             else
-              safe_unlink @dest
+              safe_unlink @dest if File.exist?(@dest)
+            end
+
+            if defined? @uninstall_entries
+              if @uninstall_entries.is_a?(String)
+                remove_entry_secure @uninstall_entries if File.exist?(@uninstall_entries)
+              elsif @uninstall_entries.is_a?(Array)
+                @uninstall_entries.each { |e| remove_entry_secure e if File.exist?(e)}
+              end
             end
           end
 
-
         end
-
       end
 
 
@@ -121,12 +145,12 @@ module Rake::Distribute
 
         desc "distribute: clean"
         task :clean do
-          safe_unlink build_dest
+          safe_unlink build_dest if File.exist?(build_dest)
         end
 
         desc "distribute: clobber"
         task :clobber => [:clean] do
-          rmdir @build_dir
+          rmdir @build_dir if File.exist?(@build_dir)
         end
 
         build_dest
@@ -135,6 +159,20 @@ module Rake::Distribute
       private
 
 
+        def uninstall_hint
+          if File.directory?(@dest) and not defined? @uninstall_entries
+          puts %Q{
+          rake/distribute: Uninstall directory is confusion!
+          Specify it using `uninstall`:
+
+            distribute :FileItem do
+              uninstall '/path/to/foder/to/uninstall'
+            end
+
+          }.strip_heredoc
+
+        end
+      end
 
       def get_build_dest
         if @build_options and @build_options.has_key?(:to)
@@ -147,4 +185,4 @@ module Rake::Distribute
     end
 
   end
-end
+  end

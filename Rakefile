@@ -18,9 +18,10 @@ Hoe.spec 'rake-distribute' do
 
   license 'GPL-3'
 
-  extra_deps << ['rake', '~> 10.0.0']
-  extra_deps << ['tilt', '~> 1.3.7']
-  extra_deps << ['diffy', '~> 2.0.9']
+  extra_deps << ['rake', '>= 10.0.0']
+  extra_deps << ['tilt', '>= 1.3.7']
+  extra_deps << ['diffy', '>= 2.0.9']
+  extra_deps << ['activesupport', '>= 3.2.13']
 end
 
 
