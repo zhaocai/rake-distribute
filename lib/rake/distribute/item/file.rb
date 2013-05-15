@@ -59,6 +59,9 @@ module Rake::Distribute
             desc "distribute: install"
             task :install => @dest
 
+
+            define_diff_task(build_dest)
+
           else # without build ( install @src -> @dest )
             file @dest => @src do
               if File.directory?(@dest)
@@ -70,6 +73,8 @@ module Rake::Distribute
 
             desc "distribute: install"
             task :install => @dest
+
+            define_diff_task(@src)
           end
 
           desc "distribute: uninstall"
@@ -81,19 +86,19 @@ module Rake::Distribute
             end
           end
 
+
         end
 
-
-        define_diff_task
       end
 
 
-      def define_diff_task
+      def define_diff_task(from)
         return unless defined? @dest
+
         desc "distribute: diff"
         task :diff do
           diffy = Diffy::Diff.new(
-            @dest, @src, :source => 'files', :allow_empty_diff => true
+            @dest, from, :source => 'files', :allow_empty_diff => true
           ).to_s(:text)
 
           @diff_proc.call(@dest, @src) unless diffy.empty?
