@@ -1,3 +1,5 @@
+.gemtest
+.vclog
 Gemfile
 Gemfile.lock
 History.md
