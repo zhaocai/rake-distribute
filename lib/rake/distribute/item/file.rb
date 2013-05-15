@@ -108,13 +108,14 @@ module Rake::Distribute
 
       def define_build_task(from)
 
-        build_dest = File.join(@build_dir, build_to)
+        build_dest = get_build_dest
 
         build_dir = File.dirname(build_dest)
         directory build_dir
         file build_dest => [from, build_dir] do
           @build_proc.call(from, build_dest)
         end
+
         desc "distribute: build"
         task :build => build_dest
 
@@ -135,11 +136,11 @@ module Rake::Distribute
 
 
 
-      def build_to
+      def get_build_dest
         if @build_options and @build_options.has_key?(:to)
           @build_options[:to]
         else
-          "#{Item.sn.to_s}-#{@src.pathmap('%n')}"
+          File.join(@build_dir, "#{Item.sn.to_s}-#{@src.pathmap('%n')}")
         end
       end
 

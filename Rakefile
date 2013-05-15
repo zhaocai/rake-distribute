@@ -16,6 +16,8 @@ Hoe.plugin :test
 Hoe.spec 'rake-distribute' do
   developer 'Zhao Cai', 'caizhaoff@gmail.com'
 
+  license 'GPL-3'
+
   extra_deps << ['rake', '~> 10.0.0']
   extra_deps << ['tilt', '~> 1.3.7']
   extra_deps << ['diffy', '~> 2.0.9']
