@@ -18,6 +18,8 @@ It is the saver to use rake tasks to manage 1 -> n file distribution. Commonly a
 
 ## SYNOPSIS:
 
+### Basic Usage
+
 ```ruby
 distribute :FileItem do
   from "/path/from"
@@ -25,19 +27,36 @@ distribute :FileItem do
 end
 
 distribute :ErbFile do
-  build_dir "build/distribute"
-  from "/path/from"
+  build_dir "build/distribute" # optional
+  from "/path/from.erb"
   to "/path/to"
-  with_context {:a => 1, :b => 2}
+  with_context {:a => 1, :b => 2} # optional
+  diff do |dest, src| # optional
+    sh %Q{vimdo diff "#{dest}" "#{src}"}
+  end
 end
 
 distribute :TiltFile do
-  prefer Tilt::BlueClothTemplate
+  prefer Tilt::BlueClothTemplate # optional
   from "/path/from"
   to "/path/to"
-  with_context {:a => 1, :b => 2}
+  with_context {:a => 1, :b => 2} # optional
 end
 ```
+### Include Simple Build Proc
+
+```ruby
+distribute :FileItem do
+  build_dir "build/distribute" # optional
+  from "/path/from.c"
+  build :to => 'to' do |from, to|
+    sh %Q{gcc "#{from}" -o "#{to}"}
+  end
+  to "/usr/bin/to"
+end
+
+```
+
 
 ## DEVELOPERS:
 

@@ -16,79 +16,41 @@ module Rake::Distribute
     class ErbFile < FileItem
       def initialize(&block)
         @context   = {}
-        @build_dir = File.join('build','distribute')
         super
-      end
-
-      def sanity?
-        super
-        raise ArgumentError, "#{@src} does not exist!" unless File.exists?(@src)
-      end
-
-      def build_dir(folder)
-        @build_dir = folder
+         
+        # if the user do not define build task
+        @build_proc ||= Proc.new { |from, to|
+          # unnecessary dup to make the workflow clear
+          copy_entry from, to
+        }
       end
 
       def with_context(context)
         @context = context
       end
 
-      def define_build_task(options={})
-        directory @build_dir
-
-        build_file = File.join(@build_dir,
-                               "#{Item.sn.to_s}-#{@src.pathmap('%n')}")
-        file build_file => @src do
-          File.open(build_file, 'w') do |f|
-            erb = ERB.new(File.read(@src))
-            f.write(erb.result(ContextStruct.new(@context).get_binding))
-            f.flush
-          end
+      def render(from, to)
+        File.open(to, 'w') do |f|
+          erb = ERB.new(File.read(from))
+          f.write(erb.result(ContextStruct.new(@context).get_binding))
+          f.flush
         end
-        build_file
       end
 
-      def define_tasks(options={})
-
-        dest_dir = @dest.pathmap("%d")
-        directory dest_dir
-
-        build_file = define_build_task(options)
-
-
-        file @dest => build_file do
-          install build_file, @dest, @dest_options
-        end
-
-        desc "distribute: build"
-        task :build => [@build_dir, build_file]
-        
-        desc "distribute: install"
-        task :install => [@build_dir, build_file, dest_dir, @dest]
-
-        desc "distribute: uninstall"
-        task :uninstall do
-          safe_unlink @dest if File.exists?(@dest)
+      alias_method :super_define_build_task, :define_build_task
+      def define_build_task(src)
+        directory @build_dir
+        render_dest = File.join(@build_dir,
+                                "#{Item.sn.to_s}-#{@src.pathmap('%n')}")
+        file render_dest => [@src, @build_dir] do
+          render(@src, render_dest)
         end
 
         desc "distribute: clean"
         task :clean do
-          safe_unlink build_file if File.exists?(build_file)
+          safe_unlink render_dest
         end
-
-        desc "distribute: clobber"
-        task :clobber => [:clean] do
-          rmdir @build_dir
-        end
-
-        desc "distribute: diff"
-        task :diff => [@build_dir, build_file] do
-          diff = Diffy::Diff.new(
-            @dest, build_file, :source => 'files', :allow_empty_diff => true
-          ).to_s(:text)
-
-          @diff_proc.call(@dest, @src) unless diff.empty?
-        end
+        super_define_build_task(render_dest)
       end
 
     end

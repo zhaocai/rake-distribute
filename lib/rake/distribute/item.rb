@@ -20,17 +20,18 @@ module Rake::Distribute
         @src = source
       end
 
-      def to(dest, options={})
+      def to(dest, options = {})
+        @dest_options = options
         @dest = dest
       end
+
 
       def diff(&block)
         raise NotImplementedError
       end
 
       def sanity?
-        raise SyntaxError, "from: is not defined" unless defined? @src
-        raise SyntaxError, "to: is not defined" unless defined? @dest
+        raise SyntaxError, "source: is not defined" unless defined? @src
       end
 
       def define_tasks

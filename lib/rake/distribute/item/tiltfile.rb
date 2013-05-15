@@ -9,7 +9,6 @@ module Rake::Distribute
 
     class TiltFile < ErbFile
       def initialize(&block)
-        Tilt.prefer Tilt::ErubisTemplate
         super
       end
 
@@ -22,23 +21,15 @@ module Rake::Distribute
 
       end
 
-      def define_build_task(options={})
-        directory @build_dir
-
-        build_file = File.join(@build_dir,
-                               "#{Item.sn.to_s}-#{@src.pathmap('%n')}")
-        file build_file => @src do
-          File.open(build_file, 'w') do |f|
-            tilt = Tilt.new(@src)
-            f.write(tilt.render(ContextStruct.new(@context)))
-            f.flush
-          end
+      def render(from, to)
+        File.open(to, 'w') do |f|
+          tilt = Tilt.new(from)
+          f.write(tilt.render(ContextStruct.new(@context)))
+          f.flush
         end
-        build_file
       end
 
     end
-
   end
 end
 
