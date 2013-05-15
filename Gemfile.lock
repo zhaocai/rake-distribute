@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rake-distribute (1.5.0.20130515033438)
+    rake-distribute (1.5.0.20130515154404)
       activesupport (>= 3.2.13)
       diffy (>= 2.0.9)
       rake (>= 10.0.0)
@@ -14,8 +14,14 @@ GEM
       i18n (= 0.6.1)
       multi_json (~> 1.0)
     diffy (2.1.4)
+    highline (1.6.18)
     hoe (3.6.1)
       rake (>= 0.8, < 11.0)
+    hoe-gemspec (1.0.0)
+      hoe (>= 2.2.0)
+    hoe-git (1.6.0)
+      highline (>= 1.6.0)
+    hoe-version (1.2.0)
     i18n (0.6.1)
     json (1.8.0)
     multi_json (1.7.3)
@@ -28,6 +34,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  hoe (~> 3.6)
+  hoe
+  hoe-gemspec
+  hoe-git
+  hoe-version
   rake-distribute!
   rdoc (~> 4.0)

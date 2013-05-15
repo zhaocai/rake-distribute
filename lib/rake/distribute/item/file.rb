@@ -105,9 +105,17 @@ module Rake::Distribute
 
             if defined? @uninstall_entries
               if @uninstall_entries.is_a?(String)
-                remove_entry_secure @uninstall_entries if File.exist?(@uninstall_entries)
+                if File.exist?(@uninstall_entries)
+                  puts "remove_entry_secure #{@uninstall_entries}"
+                  remove_entry_secure @uninstall_entries
+                end
               elsif @uninstall_entries.is_a?(Array)
-                @uninstall_entries.each { |e| remove_entry_secure e if File.exist?(e)}
+                @uninstall_entries.each { |e|
+                  if File.exist?(e)
+                    puts "remove_entry_secure #{e}"
+                    remove_entry_secure e
+                  end
+                }
               end
             end
           end
@@ -122,7 +130,7 @@ module Rake::Distribute
         desc "distribute: diff"
         task :diff do
           diffy = Diffy::Diff.new(
-            @dest, from, :source => 'files', :allow_empty_diff => true
+          @dest, from, :source => 'files', :allow_empty_diff => true
           ).to_s(:text)
 
           @diff_proc.call(@dest, @src) unless diffy.empty?
@@ -159,11 +167,11 @@ module Rake::Distribute
       private
 
 
-        def uninstall_hint
-          if File.directory?(@dest) and not defined? @uninstall_entries
+      def uninstall_hint
+        if File.directory?(@dest) and not defined? @uninstall_entries
           puts %Q{
-          rake/distribute: Uninstall directory is confusion!
-          Specify it using `uninstall`:
+            rake/distribute: Uninstall directory is confusion!
+            Specify it using `uninstall`:
 
             distribute :FileItem do
               uninstall '/path/to/foder/to/uninstall'
@@ -185,4 +193,4 @@ module Rake::Distribute
     end
 
   end
-  end
+end

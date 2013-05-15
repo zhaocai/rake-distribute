@@ -21,6 +21,9 @@ Hoe.spec 'rake-distribute' do
   extra_deps << ['tilt', '>= 1.3.7']
   extra_deps << ['diffy', '>= 2.0.9']
   extra_deps << ['activesupport', '>= 3.2.13']
+
+
+  extra_dev_deps << ['hoe'] << ['hoe-gemspec'] << ['hoe-git'] << ['hoe-version']
 end
 
 %w{major minor patch}.each { |v|

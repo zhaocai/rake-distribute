@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = "rake-distribute"
-  s.version = "1.5.0.20130515033438"
+  s.version = "1.5.0.20130515154404"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Zhao Cai"]
@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.description = "Generate rake distribute:install, uninstall, and diff tasks to distribute items (files, templates, directories, etc.) to difference locations.\n\nIt is the saver to use rake tasks to manage 1 -> n file distribution. Commonly applied cases are runcom files, Makefiles, etc. Those files exists in many locations and are almost identical with slight difference."
   s.email = ["caizhaoff@gmail.com"]
   s.extra_rdoc_files = ["History.md", "Manifest.txt", "README.md"]
-  s.files = [".vclog", "Gemfile", "Gemfile.lock", "History.md", "Manifest.txt", "README.md", "Rakefile", "lib/rake/distribute.rb", "lib/rake/distribute/core.rb", "lib/rake/distribute/dsl.rb", "lib/rake/distribute/error.rb", "lib/rake/distribute/item.rb", "lib/rake/distribute/item/erbfile.rb", "lib/rake/distribute/item/file.rb", "lib/rake/distribute/item/tiltfile.rb", "lib/rake/distribute/task.rb", "lib/rake/distribute/version.rb", "rake-distribute.gemspec", "test/minitest_helper.rb", "test/test_rake_distribute.rb", ".gemtest"]
+  s.files = [".gemtest", ".vclog", "Gemfile", "Gemfile.lock", "History.md", "Manifest.txt", "README.md", "Rakefile", "lib/rake/distribute.rb", "lib/rake/distribute/core.rb", "lib/rake/distribute/dsl.rb", "lib/rake/distribute/error.rb", "lib/rake/distribute/item.rb", "lib/rake/distribute/item/erbfile.rb", "lib/rake/distribute/item/file.rb", "lib/rake/distribute/item/tiltfile.rb", "lib/rake/distribute/task.rb", "lib/rake/distribute/version.rb", "rake-distribute.gemspec", "test/minitest_helper.rb", "test/test_rake_distribute.rb"]
   s.homepage = "https://github.com/zhaocai/rake-distribute"
   s.licenses = ["GPL-3"]
   s.rdoc_options = ["--main", "README.md"]
@@ -31,14 +31,20 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<diffy>, [">= 2.0.9"])
       s.add_runtime_dependency(%q<activesupport>, [">= 3.2.13"])
       s.add_development_dependency(%q<rdoc>, ["~> 4.0"])
-      s.add_development_dependency(%q<hoe>, ["~> 3.6"])
+      s.add_development_dependency(%q<hoe>, [">= 0"])
+      s.add_development_dependency(%q<hoe-gemspec>, [">= 0"])
+      s.add_development_dependency(%q<hoe-git>, [">= 0"])
+      s.add_development_dependency(%q<hoe-version>, [">= 0"])
     else
       s.add_dependency(%q<rake>, [">= 10.0.0"])
       s.add_dependency(%q<tilt>, [">= 1.3.7"])
       s.add_dependency(%q<diffy>, [">= 2.0.9"])
       s.add_dependency(%q<activesupport>, [">= 3.2.13"])
       s.add_dependency(%q<rdoc>, ["~> 4.0"])
-      s.add_dependency(%q<hoe>, ["~> 3.6"])
+      s.add_dependency(%q<hoe>, [">= 0"])
+      s.add_dependency(%q<hoe-gemspec>, [">= 0"])
+      s.add_dependency(%q<hoe-git>, [">= 0"])
+      s.add_dependency(%q<hoe-version>, [">= 0"])
     end
   else
     s.add_dependency(%q<rake>, [">= 10.0.0"])
@@ -46,6 +52,9 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<diffy>, [">= 2.0.9"])
     s.add_dependency(%q<activesupport>, [">= 3.2.13"])
     s.add_dependency(%q<rdoc>, ["~> 4.0"])
-    s.add_dependency(%q<hoe>, ["~> 3.6"])
+    s.add_dependency(%q<hoe>, [">= 0"])
+    s.add_dependency(%q<hoe-gemspec>, [">= 0"])
+    s.add_dependency(%q<hoe-git>, [">= 0"])
+    s.add_dependency(%q<hoe-version>, [">= 0"])
   end
 end
