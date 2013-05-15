@@ -11,7 +11,6 @@ Hoe.plugin :git
 Hoe.plugin :gemspec
 Hoe.plugin :version
 Hoe.plugin :bundler
-Hoe.plugin :test
 
 Hoe.spec 'rake-distribute' do
   developer 'Zhao Cai', 'caizhaoff@gmail.com'
@@ -24,20 +23,13 @@ Hoe.spec 'rake-distribute' do
   extra_deps << ['activesupport', '>= 3.2.13']
 end
 
-
-desc "Bump Major Version and Commit"
-task "bump:major" => ["version:bump:major"] do
-  sh "git commit -am '! Bump version to #{ENV["VERSION"]}'"
-end
-
-desc "Bump Minor Version and Commit"
-task "bump:minor" => ["version:bump:minor"] do
-  sh "git commit -am '* Bump version to #{ENV["VERSION"]}'"
-end
-desc "Bump Patch Version and Commit"
-task "bump:patch" => ["version:bump:patch"] do
-  sh "git commit -am 'Bump version to #{ENV["VERSION"]}'"
-end
+%w{major minor patch}.each { |v|
+  desc "Bump #{v.capitalize} Version"
+  task "bump:#{v}", [:message] => ["version:bump:#{v}"] do |t, args|
+    m = args[:message] ? args[:message] : "Bump version to #{ENV["VERSION"]}"
+    sh "git commit -am '#{m}'"
+  end
+}
 
 
 # vim: syntax=ruby
