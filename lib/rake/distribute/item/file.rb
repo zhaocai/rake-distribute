@@ -7,8 +7,8 @@ module Rake::Distribute
 
     class FileItem < Base
       def initialize(&block)
-        @diff_proc = Proc.new {|dest,src| puts "#{dest} differs from #{src}"}
-        @build_dir = File.join('build','distribute')
+        @diff_proc = Proc.new { |dest,src| puts "#{dest} differs from #{src}"}
+        @build_dir = File.join('build', 'distribute')
         super
       end
 
@@ -168,7 +168,7 @@ module Rake::Distribute
 
 
       def uninstall_hint
-        if File.directory?(@dest) and not defined? @uninstall_entries
+        if File.directory?(@dest) && !defined? @uninstall_entries
           puts %Q{
             rake/distribute: Uninstall directory is confusion!
             Specify it using `uninstall`:
@@ -183,7 +183,7 @@ module Rake::Distribute
       end
 
       def get_build_dest
-        if @build_options and @build_options.has_key?(:to)
+        if @build_options && @build_options.has_key?(:to)
           @build_options[:to]
         else
           File.join(@build_dir, "#{Item.sn.to_s}-#{@src.pathmap('%n')}")

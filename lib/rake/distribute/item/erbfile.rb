@@ -17,12 +17,11 @@ module Rake::Distribute
       def initialize(&block)
         @context   = {}
         super
-         
         # if the user do not define build task
-        @build_proc ||= Proc.new { |from, to|
+        @build_proc ||= Proc.new do |from, to|
           # unnecessary dup to make the workflow clear
           copy_entry from, to
-        }
+        end
       end
 
       def with_context(context)
@@ -46,7 +45,7 @@ module Rake::Distribute
           render(@src, render_dest)
         end
 
-        desc "distribute: clean"
+        desc 'distribute: clean'
         task :clean do
           safe_unlink render_dest
         end
