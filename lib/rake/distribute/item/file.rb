@@ -1,6 +1,14 @@
 require 'rake/distribute/item'
 require 'diffy'
-require 'active_support/core_ext/string'
+
+
+class String
+  def strip_heredoc
+    indent = scan(/^[ \t]*(?=\S)/).min.size || 0
+    gsub(/^[ \t]{#{indent}}/, '')
+  end
+end
+
 
 module Rake::Distribute
   module Item
